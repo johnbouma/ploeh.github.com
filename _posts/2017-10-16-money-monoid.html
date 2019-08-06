@@ -434,4 +434,30 @@ reduce&nbsp;_&nbsp;_&nbsp;<span style="color:#dd0000;">MoneyIdentity</span>&nbsp
 		</div>
 		<div class="comment-date">2018-04-14 9:51 UTC</div>
 	</div>
+	<div class="comment" id="52b9ddbe0842477b8052c631595c1444">
+		<div class="comment-author">John Bouma</div>
+		<div class="comment-content">
+			<p>
+				Mark, I came across this while looking for solutions to model some financial computations and just learning how to be a better programmer in general.  While some of the Money related information in the post/comments does work, other pieces don't.
+			</p>
+			<p>
+				Where rates are concerned, while in general you ask the market for a USD/CHF and a CHF/USD rate, in reality, there is only one rate, USD/CHF.  The market has a fixed set of currencies ('The Big 8') that comprise a hierarchy indicating which is the base currency and which is the floating currency in a market rate.
+			</p>
+			<p>
+				Those currencies are (in order): EUR, GBP, AUD, NZD, USD, CAD, CHF, JPY.  Thus, you'll never see the market actually quote a CHF/USD rate, or if you do, it will be a numeric inverser of the USD/CHF rate.
+			</p>
+			<p>
+				In order to allow parties to financial transactions to have a consistent set of rates to measure performance, there are a few sets of standard rates that are published throughout the day.  One example of this is the WM-Fix rates which are published by Reuters ~5 minutes after the close of the London market.  Interestingly, they only publish these rates with three reference currencies, USD, GBP and EUR.  I've never done an analysis on them to validate that the crosses that they do supply: ex: EUR/GBP with EUR as a reference matches the rate with GBP as a reference and the cross between EUR/USD and GBP/USD (which would be computed as [EUR/USD * (1/(GBP/USD))]).
+			</p>
+			<p>
+				Having said all of that, where FX  transactions are concerned, one is almost exclusively dealing with two-currency quantities (my name for my value object that represents one value and its conversion to another currency).  
+			</p>
+			<p>
+				One final thing that I wanted to mention is that when you're getting rates from the market, those are Spot rates.  FX transactions are settled at T+2 (T+1 for USD/CAD and a few others) meaning that the spot rate as provided by the market is the amount that you can expect to recieve in two business days.  If you're looking at what the conversion rate is 'right now at this instant,' you would take the spot rate, minus 2/7 of the one week forward points (which could be negative) to generate the actual rate for today.
+			</p>
+			<p>
+				Where FX is concerned, rates are important, what currency is the common currency among a set of transactions is important.  When converting, one must ensure that they know (1) which value is held fixed and which is calculated, and (2) that all the rates they're using are from the same source published on the same day at the same time.
+			</p>
+		</div>
+	</div>
 </div>
